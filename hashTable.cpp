@@ -95,42 +95,50 @@ bool hashTable::validateLogin(string user, string key)
 {
     entry *curr = getEntry(user);
 
+    if (!curr)
+        return false;
+
     cout << "\nPassword hash being validated:\t" << key;
     cout << "\nPassword hash provided by user:\t" << curr->getHashedPwd();
     cout << "\n";
 
-    return (curr && curr->getHashedPwd() == key) ? true : false;
+    return (curr->getHashedPwd() == key);
 }
 
-bool hashTable::removeUser(string username, string password)
+bool hashTable::removeUser(string username, string key)
 {
-    /* Validate whether the user's credentials are correct */
-    if (validateLogin(username, password))
+    int index = hash(username);
+    entry *curr = getEntry(username);
+
+    /* Check to see if entry exists */
+    if (!curr)
+        return false;
+
+    cout << "\nPassword hash being validated:\t" << key;
+    cout << "\nPassword hash provided by user:\t" << curr->getHashedPwd();
+    cout << "\n";
+
+    /* Validate the user input against the table */
+    if (curr->getHashedPwd() == key)
     {
-        int index = hash(username);
-        entry *curr = getEntry(username);
-
-        if (curr)
+        /* If user's entry is the first in the list, update the array */
+        if (hashArray[index] == curr)
+            hashArray[index] = curr->next;
+        /* Otherwise, traverse the list for the user's entry */
+        else
         {
-            /* If user's entry is the first in the list, update the array */
-            if (hashArray[index] == curr)
-                hashArray[index] = curr->next;
-            /* Otherwise, traverse the list for the user's entry */
-            else
-            {
-                entry *prev = hashArray[index];
+            entry *prev = hashArray[index];
 
-                while (prev->next != curr)
-                    prev = prev->next;
+            while (prev->next != curr)
+                prev = prev->next;
 
-                prev->next = curr->next;
-            }
-
-            /* Deallocate memory for the entry */
-            delete curr;
-            /* User removed successfully */
-            return true;
+            prev->next = curr->next;
         }
+
+        /* Deallocate memory for the entry */
+        delete curr;
+        /* User removed successfully */
+        return true;
     }
 
     /* Credentials not validated */

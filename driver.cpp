@@ -27,10 +27,10 @@ int main()
 
             /* Generate salt and password based on that salt */
             salt = table->generateSalt();
-            password = sha256(pwd + salt);
+            pwd = sha256(pwd + salt);
 
             /* Add user to table for each line */
-            table->addEntry(user, password, salt);
+            table->addEntry(user, pwd, salt);
         }
     }
 
@@ -51,7 +51,7 @@ int main()
             {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                throw std::invalid_argument("Not an integer.");
+                throw invalid_argument("Not an integer.");
             }
 
             switch (menuChoice)
@@ -62,11 +62,10 @@ int main()
                 cout << "Enter your password:\t";
                 cin >> password;
 
-                /* Encrypt the password */
+                /* Check the table for the salted hash value */
                 salt = table->getSalt(username);
                 password = sha256(password + salt);
 
-                /* Ternary if statements. Pretty and fun! */
                 table->validateLogin(username, password)
                     ? cout << "\nLogin successful\n"
                     : cout << "\nInvalid credentials\n";
@@ -79,8 +78,11 @@ int main()
                 cin >> password;
 
                 /* Encrypt the password */
-                salt = table->getSalt(username);
+                salt = table->generateSalt();
                 password = sha256(password + salt);
+
+                /* Add user */
+                table->addEntry(username, password, salt);
 
                 cout << "\nUser added successfully.\n";
                 break;
@@ -90,6 +92,10 @@ int main()
                 cin >> username;
                 cout << "Enter your password:\t";
                 cin >> password;
+
+                /* Check the table for the salted hash value */
+                salt = table->getSalt(username);
+                password = sha256(password + salt);
 
                 table->removeUser(username, password)
                     ? cout << "\nUser removed successfully.\n"
@@ -107,7 +113,7 @@ int main()
                 cout << "\nThat is not a valid choice.\n";
             }
         }
-        catch (const std::invalid_argument &e)
+        catch (const invalid_argument &e)
         {
             /* Throw the error declared earlier */
             cout << "\nError: " << e.what() << endl;
