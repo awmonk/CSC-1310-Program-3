@@ -59,6 +59,7 @@ int main()
             case 1:
                 cout << "\nEnter your username:\t";
                 cin >> username;
+
                 cout << "Enter your password:\t";
                 cin >> password;
 
@@ -74,6 +75,7 @@ int main()
             case 2:
                 cout << "\nEnter your new username:\t";
                 cin >> username;
+
                 cout << "Enter your new password:\t";
                 cin >> password;
 
@@ -90,6 +92,7 @@ int main()
             case 3:
                 cout << "\nEnter your username:\t";
                 cin >> username;
+
                 cout << "Enter your password:\t";
                 cin >> password;
 
@@ -103,8 +106,7 @@ int main()
                 break;
 
             case 4:
-                cout << "\nGOODBYE!\n";
-                cout << endl;
+                cout << "\nGOODBYE!\n\n";
 
                 delete table;
                 break;

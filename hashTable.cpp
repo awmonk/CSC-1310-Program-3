@@ -3,6 +3,7 @@ using std::cout;
 using std::string;
 
 /* HASHTABLE FUNCTIONS */
+/* Constructor */
 hashTable::hashTable(int size) : tableSize(size)
 {
     /* Dynamically allocate an array of pointers */
@@ -14,6 +15,7 @@ hashTable::hashTable(int size) : tableSize(size)
     srand(time(0));
 };
 
+/* Destructor */
 hashTable::~hashTable()
 {
     /* Deallocating elements from the front of the list */
@@ -48,12 +50,14 @@ string hashTable::generateSalt()
     return s;
 };
 
+/* Accessor */
 string hashTable::getSalt(string username)
 {
     entry *curr = getEntry(username);
     return curr ? curr->getSalt() : "";
 };
 
+/* Add Entry */
 void hashTable::addEntry(string user, string pwd, string salt)
 {
     /* Dynamically allocate a new entry */
@@ -91,6 +95,7 @@ void hashTable::addEntry(string user, string pwd, string salt)
 };
 
 /* VALIDATORS */
+/* Login Validator */
 bool hashTable::validateLogin(string user, string key)
 {
     entry *curr = getEntry(user);
@@ -105,12 +110,13 @@ bool hashTable::validateLogin(string user, string key)
     return (curr->getHashedPwd() == key);
 }
 
+/* Entry removal */
 bool hashTable::removeUser(string username, string key)
 {
     int index = hash(username);
     entry *curr = getEntry(username);
 
-    /* Check to see if entry exists */
+    /* Check to see if the entry exists */
     if (!curr)
         return false;
 
@@ -157,6 +163,7 @@ int hashTable::hash(string key)
     return sum % tableSize;
 };
 
+/* Accessor */
 hashTable::entry *hashTable::getEntry(string key)
 {
     int index = hash(key);
