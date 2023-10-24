@@ -4,6 +4,7 @@ using std::string;
 
 /* HASHTABLE FUNCTIONS */
 /* Constructor */
+/* Set private variable tableSize to size passed through as argument */
 hashTable::hashTable(int size) : tableSize(size)
 {
     /* Dynamically allocate an array of pointers */
@@ -23,6 +24,7 @@ hashTable::~hashTable()
     {
         if (hashArray[i])
         {
+            /* Initialize traversal pointers */
             entry *prev = nullptr;
             entry *curr = hashArray[i];
 
@@ -66,29 +68,39 @@ void hashTable::addEntry(string user, string pwd, string salt)
     /* Hash the entry using the username as a key */
     int index = hash(newEntry->getUsername());
 
+    /* List traversal */
+    /* Collision detection: If current index doesn't exist, add entry to index */
     if (!hashArray[index])
         hashArray[index] = newEntry;
+    /* Otherwise, traverse the list for a free address */
     else
     {
+        /* Initialize a traversal pointer */
         entry *curr = hashArray[index];
 
+        /* While traversal pointer is pointing to a valid memory address */
         while (curr)
         {
+            /* Handle case for existing username */
             if (curr->getUsername() == user)
             {
                 cout << "\nThis username already exists, ";
                 cout << "please choose a different username.\n";
 
+                /* Deallocate newEntry and return to main */
                 delete newEntry;
                 return;
             }
 
+            /* Check to see if the end of the list has been reached */
             if (!curr->next)
             {
+                /* Assign newEntry to the end of the list */
                 curr->next = newEntry;
                 return;
             }
 
+            /* Continue traversal */
             curr = curr->next;
         }
     }
@@ -98,15 +110,20 @@ void hashTable::addEntry(string user, string pwd, string salt)
 /* Login Validator */
 bool hashTable::validateLogin(string user, string key)
 {
+    /* Initialize traversal pointer using the username as a key */
     entry *curr = getEntry(user);
 
+    /* Handle invalid pointer */
     if (!curr)
         return false;
 
+    /* Validation output */
     cout << "\nPassword hash being validated:\t" << key;
     cout << "\nPassword hash provided by user:\t" << curr->getHashedPwd();
     cout << "\n";
 
+    /* Return boolean for whether the hashed password for the traversal pointer
+       matches the argument passed through to the function */
     return (curr->getHashedPwd() == key);
 }
 
@@ -120,6 +137,7 @@ bool hashTable::removeUser(string username, string key)
     if (!curr)
         return false;
 
+    /* Validation output */
     cout << "\nPassword hash being validated:\t" << key;
     cout << "\nPassword hash provided by user:\t" << curr->getHashedPwd();
     cout << "\n";
@@ -133,8 +151,11 @@ bool hashTable::removeUser(string username, string key)
         /* Otherwise, traverse the list for the user's entry */
         else
         {
+            /* Initialize a prev traversal pointer */
             entry *prev = hashArray[index];
 
+            /* While prev pointer has not caught up with the current pointer,
+               continue traversal */
             while (prev->next != curr)
                 prev = prev->next;
 
@@ -166,9 +187,12 @@ int hashTable::hash(string key)
 /* Accessor */
 hashTable::entry *hashTable::getEntry(string key)
 {
+    /* Hash the key before initializing a traversal pointer assigned to its respective
+       bucket */
     int index = hash(key);
     entry *curr = hashArray[index];
 
+    /* Traverse the list using the username as the key */
     while (curr)
     {
         if (curr->getUsername() == key)
@@ -177,5 +201,6 @@ hashTable::entry *hashTable::getEntry(string key)
         curr = curr->next;
     }
 
+    /* Handle case for invalid entry */
     return nullptr;
 };

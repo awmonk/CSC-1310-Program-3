@@ -118,7 +118,7 @@ int main()
         catch (const invalid_argument &e)
         {
             /* Throw the error declared earlier */
-            cout << "\nError: " << e.what() << endl;
+            cout << "\nError: " << e.what() << "\n";
         }
     } while (menuChoice != 4);
 

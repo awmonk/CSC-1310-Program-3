@@ -20,6 +20,7 @@ private:
     entry **hashArray;
 
     /* FUNCTION DECLARATIONS */
+    /* HASH FUNCTION AND ENTRY ACCESSOR */
     int hash(string);
     entry *getEntry(string);
 
@@ -56,6 +57,7 @@ public:
     /* FUNCTION DECLARATIONS */
     /* CONSTRUCTOR */
     entry(string u, string p, string s)
+        /* Initialize attributes */
         : uname(u), passHash(p), salt(s), next(nullptr){};
 
     /* ACCESSORS */
