@@ -1,6 +1,33 @@
-#include "sha256.h"
 #include "hashTable.h"
+#include "sha256.h"
+#include <conio.h>
 using namespace std;
+
+string getPassword()
+{
+    string password = "";
+    char ch;
+
+    while ((ch = getch()) != 13)
+    {
+        if (ch == '\b')
+        {
+            if (!password.empty())
+            {
+                cout << "\b \b";
+                password.pop_back();
+            }
+        }
+        else
+        {
+            cout << '*';
+            password += ch;
+        }
+    }
+
+    cout << "\n";
+    return password;
+}
 
 int main()
 {
@@ -61,15 +88,15 @@ int main()
                 cin >> username;
 
                 cout << "Enter your password:\t";
-                cin >> password;
+                password = getPassword();
 
                 /* Check the table for the salted hash value */
                 salt = table->getSalt(username);
                 password = sha256(password + salt);
 
                 table->validateLogin(username, password)
-                    ? cout << "\nLogin successful\n"
-                    : cout << "\nInvalid credentials\n";
+                    ? cout << "\nLogin successful.\n"
+                    : cout << "\nInvalid credentials.\n";
                 break;
 
             case 2:
@@ -77,7 +104,7 @@ int main()
                 cin >> username;
 
                 cout << "Enter your new password:\t";
-                cin >> password;
+                password = getPassword();
 
                 /* Encrypt the password */
                 salt = table->generateSalt();
@@ -94,7 +121,7 @@ int main()
                 cin >> username;
 
                 cout << "Enter your password:\t";
-                cin >> password;
+                password = getPassword();
 
                 /* Check the table for the salted hash value */
                 salt = table->getSalt(username);
@@ -113,6 +140,7 @@ int main()
 
             default:
                 cout << "\nThat is not a valid choice.\n";
+                break;
             }
         }
         catch (const invalid_argument &e)
