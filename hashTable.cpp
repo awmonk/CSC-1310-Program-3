@@ -84,8 +84,8 @@ void hashTable::addEntry(string user, string pwd, string salt)
             /* Handle case for existing username */
             if (curr->getUsername() == user)
             {
-                cout << "\nThis username already exists, ";
-                cout << "please choose a different username.\n";
+                cout << "\nThis username already exists, "
+                     << "please choose a different username.\n";
 
                 /* Deallocate newEntry and return to main */
                 delete newEntry;
@@ -118,9 +118,9 @@ bool hashTable::validateLogin(string user, string key)
         return false;
 
     /* Validation output */
-    cout << "\nPassword hash being validated:\t" << key;
-    cout << "\nPassword hash provided by user:\t" << curr->getHashedPwd();
-    cout << "\n";
+    cout << "\nPassword hash being validated:\t" << key
+         << "\nPassword hash provided by user:\t" << curr->getHashedPwd()
+         << "\n";
 
     /* Return boolean for whether the hashed password for the traversal pointer
        matches the argument passed through to the function */
@@ -138,9 +138,9 @@ bool hashTable::removeUser(string username, string key)
         return false;
 
     /* Validation output */
-    cout << "\nPassword hash being validated:\t" << key;
-    cout << "\nPassword hash provided by user:\t" << curr->getHashedPwd();
-    cout << "\n";
+    cout << "\nPassword hash being validated:\t" << key
+         << "\nPassword hash provided by user:\t" << curr->getHashedPwd()
+         << "\n";
 
     /* Validate the user input against the table */
     if (curr->getHashedPwd() == key)
