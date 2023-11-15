@@ -32,8 +32,10 @@ string getPassword()
 int main()
 {
     ifstream file("testlist.txt");
+
     int menuChoice;
     int numUsers;
+
     string user, pwd, salt;
     string username, password;
 
@@ -65,12 +67,12 @@ int main()
     {
         try
         {
-            cout << "\nWhat would you like to do?\n";
-            cout << "\t1. Login.\n";
-            cout << "\t2. Create account.\n";
-            cout << "\t3. Delete account.\n";
-            cout << "\t4. Exit.";
-            cout << "\nCHOOSE 1-4: ";
+            cout << "\nWhat would you like to do?\n"
+                 << "\t1. Login.\n"
+                 << "\t2. Create account.\n"
+                 << "\t3. Delete account.\n"
+                 << "\t4. Exit."
+                 << "\nCHOOSE 1-4: ";
             cin >> menuChoice;
 
             /* Catch for invalid menu input */
