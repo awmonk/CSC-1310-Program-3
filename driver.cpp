@@ -5,21 +5,33 @@ using namespace std;
 
 string getPassword()
 {
+    /* A simple function to obscure passwords while typing. Uses an empty string and
+       C++'s embedded i/o and stack methods */
     string password = "";
     char ch;
 
+    /* getch, or "get char" function captures the user's input. '13' is the ASCII value
+       for ENTER; the loop will complete once the user hits the enter key */
     while ((ch = getch()) != 13)
     {
+        /* If the character is '\b'; the BACKSPACE key */
         if (ch == '\b')
         {
+            /* Treating the array of characters as a stack and checking to see if any
+               characters have been typed */
             if (!password.empty())
             {
+                /* BACKSPACE twice, once for the newchar at the end of the array and once
+                   for the char the user is trying to remove. Using the stack method
+                   "pop" to remove the top char from the stack */
                 cout << "\b \b";
                 password.pop_back();
             }
         }
         else
         {
+            /* Display an asterisk to let the user know a character has been added to
+               the string. Then add the character to the array */
             cout << '*';
             password += ch;
         }
